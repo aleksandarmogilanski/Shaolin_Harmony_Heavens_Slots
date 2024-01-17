@@ -32,13 +32,13 @@ sounds_dict = {
     "china_song": pygame.mixer.Sound("sounds/china_song.mp3")
 }
 
-# Function to play the background theme
+
 def play_background_theme():
     pygame.mixer.music.load("sounds/china_song.mp3")
-    pygame.mixer.music.set_volume(0.1)  # Set the volume to a low level
-    pygame.mixer.music.play(-1)  # -1 indicates that the music will loop indefinitely
+    pygame.mixer.music.set_volume(0.1) 
+    pygame.mixer.music.play(-1)  
 
-# Function to stop the background theme
+
 def stop_background_theme():
     pygame.mixer.music.stop()
 
@@ -88,8 +88,7 @@ def shake_winning_icons(winning_indices):
     global shaking_icons, shaking_start_time
     shaking_icons = [(row, col) for row in range(3) for col in range(3) if row * 3 + col in winning_indices]
     shaking_start_time = time.time()
-    sounds_dict["win"].play()  # Play winning sound
-
+    sounds_dict["win"].play()
 
 def draw_shaking_icons():
     global shaking_icons, shaking_start_time
@@ -223,10 +222,10 @@ def check_winning_conditions(result_reels, bet_amount):
 
 def spin_reels():
     sounds_dict["wheel"].play()
-    spinning_duration = 2000  # Total spinning duration in milliseconds
-    acceleration_duration = 200  # Acceleration duration in milliseconds
-    spin_speed = 0.1  # Initial speed of spinning
-    max_spin_speed = 5.5  # Maximum speed of spinning
+    spinning_duration = 2000  
+    acceleration_duration = 200  
+    spin_speed = 0.1  
+    max_spin_speed = 5.5  
     acceleration = (max_spin_speed - spin_speed) / acceleration_duration
 
     result_reels = [random.choice(list(icons_dict.keys())) for _ in range(9)]
@@ -274,7 +273,7 @@ def ease_out_cubic(t):
 
 def display_result(result_reels):
     start_time = pygame.time.get_ticks()
-    spinning_duration = 2000  # 2 seconds
+    spinning_duration = 2000 
 
     while pygame.time.get_ticks() - start_time < spinning_duration:
         for row in range(3):
@@ -346,7 +345,7 @@ while run:
                             print(f"WON {winnings:.2f} $$$")
                             sounds_dict["win"].play()
                             winning_indices = [i for i, symbol in enumerate(reels) if reels.count(symbol) >= 3]
-                            shake_winning_icons(winning_indices)  # Start shaking only the winning icons
+                            shake_winning_icons(winning_indices)
                         else:
                             print("No win this round.")
                     else:
@@ -409,4 +408,3 @@ stop_background_theme()
 
 pygame.quit()
 quit()
-
