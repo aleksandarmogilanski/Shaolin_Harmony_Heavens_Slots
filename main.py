@@ -32,13 +32,13 @@ sounds_dict = {
     "china_song": pygame.mixer.Sound("sounds/china_song.mp3")
 }
 
-# Function to play the background theme
+
 def play_background_theme():
     pygame.mixer.music.load("sounds/china_song.mp3")
-    pygame.mixer.music.set_volume(0.1)  # Set the volume to a low level
-    pygame.mixer.music.play(-1)  # -1 indicates that the music will loop indefinitely
+    pygame.mixer.music.set_volume(0.1)
+    pygame.mixer.music.play(-1) 
 
-# Function to stop the background theme
+
 def stop_background_theme():
     pygame.mixer.music.stop()
 
@@ -88,7 +88,7 @@ def shake_winning_icons(winning_indices):
     global shaking_icons, shaking_start_time
     shaking_icons = [(row, col) for row in range(3) for col in range(3) if row * 3 + col in winning_indices]
     shaking_start_time = time.time()
-    sounds_dict["win"].play()  # Play winning sound
+    sounds_dict["win"].play()  
 
 
 def draw_shaking_icons():
@@ -223,10 +223,10 @@ def check_winning_conditions(result_reels, bet_amount):
 
 def spin_reels():
     sounds_dict["wheel"].play()
-    spinning_duration = 1000  # Reduce the spinning duration to 1 second
-    acceleration_duration = 200  # Acceleration duration in milliseconds
-    spin_speed = 0.1  # Initial speed of spinning
-    max_spin_speed = 5.5  # Maximum speed of spinning
+    spinning_duration = 1000 
+    acceleration_duration = 200  
+    spin_speed = 0.1 
+    max_spin_speed = 5.5 
     acceleration = (max_spin_speed - spin_speed) / acceleration_duration
 
     result_reels = [random.choice(list(icons_dict.keys())) for _ in range(9)]
@@ -260,9 +260,9 @@ def spin_reels():
                     screen.blit(image, (x + offset, y + offset))
 
         pygame.display.flip()
-        pygame.time.delay(8)  # Adjust the delay to control the spinning speed
+        pygame.time.delay(8)  
 
-    # Stop spinning and choose a random emoji for each cell
+ 
     result_reels = [random.choice(list(icons_dict.keys())) for _ in range(9)]
 
     return result_reels
@@ -307,7 +307,7 @@ def display_result(result_reels):
     return result_reels
 
 
-# Play the background theme
+
 play_background_theme()
 
 message = None
@@ -327,7 +327,6 @@ while run:
                     print("Balance set to:", balance)
                     deposit_button_rect = pygame.Rect(0, 0, 0, 0)
 
-                    # Play the cashier sound
                     sounds_dict["cashier"].play()
 
                 except ValueError:
@@ -398,7 +397,7 @@ while run:
             if image:
                 screen.blit(image, (x, y))
 
-    draw_shaking_icons()  # Draw shaking icons for winning combinations
+    draw_shaking_icons() 
 
     if message:
         message_text = message_font.render(message, True, pygame.Color('yellow'))
@@ -406,7 +405,6 @@ while run:
 
     pygame.display.flip()
 
-# Stop the background theme when the program ends
 stop_background_theme()
 
 pygame.quit()
