@@ -9,7 +9,7 @@ height = 800
 
 screen = pygame.display.set_mode((width, height))
 
-pygame.display.set_caption("                                                                                                                                  Shaolin Harmony Havens Slots")
+pygame.display.set_caption("                                                                                                                        Shaolin Harmony Havens Slots")
 logo = pygame.image.load('images/slot-machine (1).png')
 pygame.display.set_icon(logo)
 
@@ -32,12 +32,10 @@ sounds_dict = {
     "china_song": pygame.mixer.Sound("sounds/china_song.mp3")
 }
 
-
 def play_background_theme():
     pygame.mixer.music.load("sounds/china_song.mp3")
-    pygame.mixer.music.set_volume(0.1) 
-    pygame.mixer.music.play(-1)  
-
+    pygame.mixer.music.set_volume(0.1)
+    pygame.mixer.music.play(-1)
 
 def stop_background_theme():
     pygame.mixer.music.stop()
@@ -61,6 +59,11 @@ deposit_button_rect = pygame.Rect(width // 2 - 50, height - 72, 100, 30)
 deposit_button_color = pygame.Color('green')
 deposit_button_text = label_font.render("DEPOSIT", True, pygame.Color('white'))
 
+cashout_button_rect = pygame.Rect(width // 2 + 290, height - 40, 110, 30)
+cashout_button_color = pygame.Color('blue')
+cashout_button_text = label_font.render("CASHOUT", True, pygame.Color('white'))
+
+
 bet_buttons = [
     {"rect": pygame.Rect(50, height - 40, 60, 30), "amount": 0.2},
     {"rect": pygame.Rect(120, height - 40, 60, 30), "amount": 0.5},
@@ -82,7 +85,6 @@ message_font = pygame.font.Font(None, 48)
 shaking_icons = []
 shaking_start_time = 0
 shaking_duration = 6
-
 
 def shake_winning_icons(winning_indices):
     global shaking_icons, shaking_start_time
@@ -108,7 +110,6 @@ def draw_shaking_icons():
                 screen.blit(scaled_image, (x + offset, y + offset))
     else:
         shaking_icons = []
-
 
 def check_winning_conditions(result_reels, bet_amount):
     global winnings
@@ -219,13 +220,12 @@ def check_winning_conditions(result_reels, bet_amount):
     return False
 
 
-
 def spin_reels():
     sounds_dict["wheel"].play()
-    spinning_duration = 2000  
-    acceleration_duration = 200  
-    spin_speed = 0.1  
-    max_spin_speed = 5.5  
+    spinning_duration = 2000
+    acceleration_duration = 200
+    spin_speed = 0.1
+    max_spin_speed = 5.5
     acceleration = (max_spin_speed - spin_speed) / acceleration_duration
 
     result_reels = [random.choice(list(icons_dict.keys())) for _ in range(9)]
@@ -261,19 +261,16 @@ def spin_reels():
         pygame.display.flip()
         pygame.time.delay(16)
 
-
     result_reels = [random.choice(list(icons_dict.keys())) for _ in range(9)]
 
     return result_reels
 
-
 def ease_out_cubic(t):
     return 1 - math.pow(1 - t, 3)
 
-
 def display_result(result_reels):
     start_time = pygame.time.get_ticks()
-    spinning_duration = 2000 
+    spinning_duration = 2000
 
     while pygame.time.get_ticks() - start_time < spinning_duration:
         for row in range(3):
@@ -305,7 +302,6 @@ def display_result(result_reels):
 
     return result_reels
 
-
 play_background_theme()
 
 message = None
@@ -324,12 +320,15 @@ while run:
                     balance = int(text)
                     print("Balance set to:", balance)
                     deposit_button_rect = pygame.Rect(0, 0, 0, 0)
-
-
                     sounds_dict["cashier"].play()
 
                 except ValueError:
                     print("Invalid input. Please enter a valid number.")
+
+            # Check if Cashout button is clicked
+            elif cashout_button_rect.collidepoint(event.pos) and not active:
+                print(f"Successfully withdrawn {balance:.2f} $$$")
+                run = False  # End the program
 
             for button in bet_buttons:
                 if button["rect"].collidepoint(event.pos) and balance is not None:
@@ -350,7 +349,6 @@ while run:
                             print("No win this round.")
                     else:
                         print("Insufficient balance.")
-
 
         elif event.type == pygame.KEYDOWN:
             if active:
@@ -385,6 +383,10 @@ while run:
         pygame.draw.rect(screen, pygame.Color('black'), button["rect"])
         button_text = label_font.render(f"{button['amount']:.2f}", True, pygame.Color('white'))
         screen.blit(button_text, (button["rect"].x + 10, button["rect"].y + 5))
+
+    # Draw the Cashout button
+    pygame.draw.rect(screen, cashout_button_color, cashout_button_rect)
+    screen.blit(cashout_button_text, (cashout_button_rect.x + 10, cashout_button_rect.y + 5))
 
     for row in range(3):
         for col in range(3):
